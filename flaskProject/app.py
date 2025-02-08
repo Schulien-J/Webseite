@@ -10,6 +10,18 @@ import json
 
 app = Flask(__name__)
 CORS(app)
+from flask import Flask, send_file, request
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from scipy.ndimage import gaussian_filter
+from flask_cors import CORS
+import io
+import json
+
+app = Flask(__name__)
+CORS(app)
+
 def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
     x_res, y_res = 200, 100
     x = np.linspace(0, 5 * np.pi, x_res)
@@ -24,11 +36,13 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
     random_noise = gaussian_filter(random_noise, sigma=4)
     Z += random_noise
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-    c = ax.imshow(Z, extent=[0, 5 * np.pi, 0, 5 * np.pi], origin='lower', cmap='viridis', aspect='auto')
-    fig.colorbar(c, ax=ax)
+    fig = plt.figure(figsize=(8, 6))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='none')
     ax.set_xlabel("X-Achse")
     ax.set_ylabel("Y-Achse")
+    ax.set_zlabel("Z-Achse")
+    ax.view_init(elev=30, azim=-90)  # Kameraeinstellung für eine bessere Ansicht
 
     img_io = io.BytesIO()
     plt.savefig(img_io, format='png', bbox_inches='tight', dpi=150)
