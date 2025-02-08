@@ -36,7 +36,7 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
     random_noise = gaussian_filter(random_noise, sigma=4)
     Z += random_noise
 
-    fig = plt.figure(figsize=(8, 6))
+    fig = plt.figure(figsize=(10, 6))
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='none')
     ax.set_xlabel("X-Achse")
