@@ -42,7 +42,7 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
     ax.set_xlabel("X-Achse")
     ax.set_ylabel("Y-Achse")
     ax.set_zlabel("Z-Achse")
-    ax.view_init(elev=30, azim=-90)  # Kameraeinstellung für eine bessere Ansicht
+    ax.view_init(elev=45, azim=-135)  # Kameraeinstellung für eine bessere Ansicht
 
     img_io = io.BytesIO()
     plt.savefig(img_io, format='png', bbox_inches='tight', dpi=150)
