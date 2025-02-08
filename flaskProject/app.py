@@ -31,7 +31,7 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
             yaxis=dict(range=[0, 5 * np.pi]),
             zaxis=dict(showgrid=False, showticklabels=False)
         ),
-        scene_camera=dict(eye=dict(x=-1, y=-1, z=2.1))
+        scene_camera=dict(eye=dict(x=-1, y=-1, z=1.1))
 
     )
 
