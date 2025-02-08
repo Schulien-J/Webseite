@@ -9,7 +9,7 @@ import io
 app = Flask(__name__)
 CORS(app)
 def generate_image(A,B,C,fx,fy,gx,gy,hx,hy,noise):
-    x_res, y_res = 200, 100
+    x_res, y_res = 2000, 1000
     x = np.linspace(0, 5 * np.pi, x_res)
     y = np.linspace(0, 2 * np.pi, y_res)
     X, Y = np.meshgrid(x, y)
@@ -28,7 +28,7 @@ def generate_image(A,B,C,fx,fy,gx,gy,hx,hy,noise):
 
     fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z, cmap='viridis',linewidth = 0, antialiased=True, edgecolors='none')
+    surf = ax.plot_surface(X, Y, Z, cmap='viridis', edgecolors='none', linewidth=0, antialiased=False, shade=True)
 
     ax.set_xticks([])
     ax.set_yticks([])
@@ -37,14 +37,14 @@ def generate_image(A,B,C,fx,fy,gx,gy,hx,hy,noise):
     ax.grid(False)
 
     img_io = io.BytesIO()
-    plt.savefig(img_io, format='webp', bbox_inches='tight', dpi=150)
+    plt.savefig(img_io, format='webp', bbox_inches='tight', dpi=250)
     img_io.seek(0)
     plt.close(fig)
 
     return img_io
 
 
-@app.route('/')
+@app.route('/sinwave', methods=['POST'])
 def generate_img():
     A = float(request.args.get('A', 1.3))
     B = float(request.args.get('B', 0.5))
