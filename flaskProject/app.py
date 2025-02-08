@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 from scipy.ndimage import gaussian_filter
 from flask_cors import CORS
 import io
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -44,17 +45,22 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
 
 @app.route('/sinwave', methods=['POST'])
 def generate_img():
-    A = float(request.args.get('A', 1.3))
-    B = float(request.args.get('B', 0.5))
-    C = float(request.args.get('C', 0.3))
-    fx = float(request.args.get('fx', 1.5))
-    fy = float(request.args.get('fy', 1.3))
-    gx = float(request.args.get('gx', 0.6))
-    gy = float(request.args.get('gy', 0.3))
-    hx = float(request.args.get('hx', 0.01))
-    hy = float(request.args.get('hy', 0.01))
-    noise = float(request.args.get('noise', 6))
-    return send_file(generate_image(A,B,C,fx,fy,gx,gy,hx,hy,noise), mimetype='image/webp')
+    try:
+        data = request.get_json()
+        A = float(data.get('A', 1.3))
+        B = float(data.get('B', 0.5))
+        C = float(data.get('C', 0.3))
+        fx = float(data.get('fx', 1.5))
+        fy = float(data.get('fy', 1.3))
+        gx = float(data.get('gx', 0.6))
+        gy = float(data.get('gy', 0.3))
+        hx = float(data.get('hx', 0.01))
+        hy = float(data.get('hy', 0.01))
+        noise = float(data.get('noise', 0))
+    except Exception as e:
+        return {"error": "Invalid input data", "message": str(e)}, 400
+
+    return send_file(generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise), mimetype='image/webp')
 
 
 
