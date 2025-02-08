@@ -24,22 +24,16 @@ def generate_image(A, B, C, fx, fy, gx, gy, hx, hy, noise):
     random_noise = gaussian_filter(random_noise, sigma=4)
     Z += random_noise
 
-    fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y, colorscale='viridis')])
-    fig.update_layout(
-        scene=dict(
-            xaxis=dict(range=[0, 5 * np.pi]),
-            yaxis=dict(range=[0, 5 * np.pi]),
-            zaxis=dict(showgrid=False, showticklabels=False)
-        ),
-        scene_camera=dict(eye=dict(x=-1, y=-1, z=1.55))
+    fig, ax = plt.subplots(figsize=(8, 6))
+    c = ax.imshow(Z, extent=[0, 5 * np.pi, 0, 5 * np.pi], origin='lower', cmap='viridis', aspect='auto')
+    fig.colorbar(c, ax=ax)
+    ax.set_xlabel("X-Achse")
+    ax.set_ylabel("Y-Achse")
 
-    )
-
-
-# Speichern als statisches Bild
     img_io = io.BytesIO()
-    fig.write_image(img_io, format='png', scale=2)
+    plt.savefig(img_io, format='png', bbox_inches='tight', dpi=150)
     img_io.seek(0)
+    plt.close(fig)
     return img_io
 
 
